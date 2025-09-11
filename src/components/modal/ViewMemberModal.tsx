@@ -7,7 +7,11 @@ export default function ViewMemberModal({ member, onClose }: any) {
         <h2 className="text-lg font-semibold mb-4">Member Details</h2>
         <div className="space-y-2">
           <img
-            src={member.image || "https://via.placeholder.com/100"}
+            src={
+              member.image
+                ? `${import.meta.env.VITE_API_URL}${member.image}`
+                : "https://via.placeholder.com/100"
+            }
             alt={member.username}
             className="w-20 h-20 rounded-full mx-auto"
           />
