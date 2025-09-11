@@ -19,7 +19,11 @@ export default function MemberRow({
       {/* Profile Image */}
       <td className="p-2 border">
         <img
-          src={member.image || "https://via.placeholder.com/40"}
+          src={
+            member.image
+              ? `${import.meta.env.VITE_API_URL}${member.image}`
+              : "https://via.placeholder.com/40"
+          }
           alt={member.username}
           className="w-10 h-10 rounded-full object-cover"
         />
