@@ -28,26 +28,27 @@ export const getMembers = async (
     },
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
-      "Cache-Control": "no-cache",
     },
   });
 
-  return res.data; 
+  return res.data;
 };
 
-export const createMember = async (member: Partial<Member>) => {
+export const createMember = async (member: FormData) => {
   const res = await axios.post(API_URL, member, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
+      "Content-Type": "multipart/form-data",
     },
   });
   return res.data;
 };
 
-export const updateMember = async (id: number, member: Partial<Member>) => {
+export const updateMember = async (id: number, member: FormData) => {
   const res = await axios.put(`${API_URL}/${id}`, member, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
+      "Content-Type": "multipart/form-data",
     },
   });
   return res.data;
