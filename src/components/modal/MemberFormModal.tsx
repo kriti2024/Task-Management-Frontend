@@ -1,46 +1,42 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { createMember, updateMember } from "@/services/member.service";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-interface MemberFormProps {
-  member?: any;
-  onClose: () => void;
-}
-
-export default function MemberForm({ member, onClose }: MemberFormProps) {
+export default function MemberFormModal({ member, onClose }: any) {
   const [form, setForm] = useState({
-    username: "",
-    email: "",
+    username: member?.username || "",
+    email: member?.email || "",
     password: "",
-    role: "Member",
-    image: "",
+    role: member?.role || "Member",
+    image: member?.image || null,
   });
-
-  useEffect(() => {
-    if (member) {
-      setForm({
-        username: member.username || "",
-        email: member.email || "",
-        password: "",
-        role: member.role || "Member",
-        image: member.image || "",
-      });
-    }
-  }, [member]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("username", form.username);
+    formData.append("email", form.email);
+    formData.append("role", form.role);
+
+    if (!member && form.password) {
+      formData.append("password", form.password);
+    }
+
+    if (form.image instanceof File) {
+      formData.append("image", form.image);
+    }
+
     try {
       if (member) {
-        await updateMember(member.id, form);
+        await updateMember(member.id, formData);
       } else {
-        await createMember(form);
+        await createMember(formData);
       }
       onClose();
     } catch (error) {
       console.error("Error submitting form:", error);
-      alert("Failed to save member. Please check the console for details.");
     }
   };
 
@@ -79,10 +75,26 @@ export default function MemberForm({ member, onClose }: MemberFormProps) {
             onChange={(e) => setForm({ ...form, role: e.target.value })}
           />
           <Input
-            placeholder="Image URL"
-            value={form.image}
-            onChange={(e) => setForm({ ...form, image: e.target.value })}
+            type="file"
+            accept="image/*"
+            onChange={(e) =>
+              setForm({
+                ...form,
+                image: e.target.files ? e.target.files[0] : null,
+              })
+            }
           />
+          {form.image && (
+            <img
+              src={
+                form.image instanceof File
+                  ? URL.createObjectURL(form.image)
+                  : `${import.meta.env.VITE_API_URL}${form.image}`
+              }
+              alt="Preview"
+              className="w-20 h-20 rounded-full object-cover mt-2"
+            />
+          )}
 
           <div className="flex justify-end gap-2 mt-4">
             <Button type="button" variant="outline" onClick={onClose}>
