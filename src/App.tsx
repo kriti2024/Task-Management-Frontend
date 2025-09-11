@@ -4,6 +4,7 @@ import LoginPage from "./pages/LoginPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminDashboard from "./pages/AdminDashboard";
 import MemberDashboard from "./pages/MemberDashboard";
+import MembersPage from "./components/members/Members";
 import { AuthProvider } from "./provider/AuthProvider";
 
 function App() {
@@ -12,6 +13,8 @@ function App() {
       <AuthProvider>
         <Routes>
           <Route path="/login" element={<LoginPage />} />
+
+          {/* Admin routes */}
           <Route
             path="/admin-dashboard"
             element={
@@ -19,7 +22,11 @@ function App() {
                 <AdminDashboard />
               </ProtectedRoute>
             }
-          />
+          >
+            <Route path="members" element={<MembersPage />} />
+          </Route>
+
+          {/* Member routes */}
           <Route
             path="/member-dashboard"
             element={
@@ -33,4 +40,5 @@ function App() {
     </BrowserRouter>
   );
 }
+
 export default App;
