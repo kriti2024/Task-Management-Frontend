@@ -13,7 +13,7 @@ export default function Members() {
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [page, setPage] = useState(1);
-  const [perPage] = useState(5);
+  const [perPage] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
 
