@@ -1,13 +1,13 @@
 import { useEffect, useState, useCallback } from "react";
+import { useNavigate } from "react-router";
 import { getMembers, deleteMember } from "@/services/member.service";
 import type { Member } from "@/services/member.service";
 import MemberRow from "./MemberRow";
-import MemberForm from "../modal/MemberFormModal";
-import ViewMemberModal from "../modal/ViewMemberModal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 export default function Members() {
+  const navigate = useNavigate();
   const [members, setMembers] = useState<Member[]>([]);
   const [search, setSearch] = useState("");
   const [from, setFrom] = useState("");
@@ -16,10 +16,6 @@ export default function Members() {
   const [perPage] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
-
-  const [showForm, setShowForm] = useState(false);
-  const [editMember, setEditMember] = useState<Member | null>(null);
-  const [viewMember, setViewMember] = useState<Member | null>(null);
 
   const fetchMembers = useCallback(async () => {
     setLoading(true);
@@ -50,6 +46,7 @@ export default function Members() {
 
   return (
     <div className="p-6 bg-white rounded-xl shadow">
+      {/* Header: Search and Create */}
       <div className="flex justify-between items-center mb-4">
         <div className="flex gap-2">
           <Input
@@ -68,7 +65,9 @@ export default function Members() {
             onChange={(e) => setTo(e.target.value)}
           />
         </div>
-        <Button onClick={() => setShowForm(true)}>+ Create Member</Button>
+        <Button onClick={() => navigate("/admin-dashboard/members/new")}>
+          + Create Member
+        </Button>
       </div>
 
       {/* Members Table */}
@@ -96,11 +95,8 @@ export default function Members() {
                 key={m.id}
                 member={m}
                 onDelete={handleDelete}
-                onEdit={() => {
-                  setEditMember(m);
-                  setShowForm(true);
-                }}
-                onView={() => setViewMember(m)}
+                onEdit={() => navigate(`/admin-dashboard/members/${m.id}/edit`)}
+                onView={() => navigate(`/admin-dashboard/members/${m.id}`)}
               />
             ))
           ) : (
@@ -133,24 +129,6 @@ export default function Members() {
           Next
         </Button>
       </div>
-
-      {/* Modals */}
-      {showForm && (
-        <MemberForm
-          member={editMember}
-          onClose={() => {
-            setShowForm(false);
-            setEditMember(null);
-            fetchMembers();
-          }}
-        />
-      )}
-      {viewMember && (
-        <ViewMemberModal
-          member={viewMember}
-          onClose={() => setViewMember(null)}
-        />
-      )}
     </div>
   );
 }
