@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import type { Member } from "@/services/member.service";
-
+import { useNavigate } from "react-router";
 interface MemberRowProps {
   member: Member;
   onView: () => void;
@@ -10,10 +10,10 @@ interface MemberRowProps {
 
 export default function MemberRow({
   member,
-  onView,
   onEdit,
   onDelete,
 }: MemberRowProps) {
+  const navigate = useNavigate();
   return (
     <tr>
       {/* Profile Image */}
@@ -35,7 +35,18 @@ export default function MemberRow({
       <td className="p-2 border">{member.email}</td>
 
       {/* Role */}
-      <td className="p-2 border">{member.role || "User"}</td>
+      <td className="p-2 border text-center">
+        <span
+          className={`px-2 py-1 text-xs font-semibold rounded-full
+      ${
+        member.role === "ADMIN"
+          ? "bg-blue-100 text-blue-700"
+          : "bg-green-100 text-green-700"
+      }`}
+        >
+          {member.role || "User"}
+        </span>
+      </td>
 
       {/* Created At */}
       <td className="p-2 border">
@@ -48,9 +59,11 @@ export default function MemberRow({
 
       {/* Actions */}
       <td className="p-2 border flex gap-2">
-        <Button size="sm" variant="outline" onClick={onView}>
+        <Button
+          onClick={() => navigate(`/admin-dashboard/members/${member.id}`)}
+        >
           View
-        </Button>
+        </Button>{" "}
         <Button size="sm" variant="outline" onClick={onEdit}>
           Edit
         </Button>
