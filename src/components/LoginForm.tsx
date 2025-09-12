@@ -50,25 +50,28 @@ function LoginForm() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-green-50">
+    <div className="flex justify-center items-center min-h-screen bg-gray-100">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="bg-white p-8 rounded-lg shadow-md w-full max-w-md"
+        className="bg-white p-8 rounded-xl shadow-md w-full max-w-md"
       >
-        <h2 className="text-2xl font-semibold mb-6 text-center text-green-700">
+        <h2 className="text-3xl font-bold mb-6 text-center text-gray-900">
           Login
         </h2>
 
         {loginError && (
-          <p className="text-red-500 text-center mb-4">{loginError}</p>
+          <p className="text-red-500 text-center mb-4 font-medium">
+            {loginError}
+          </p>
         )}
 
+        {/* Email */}
         <div className="mb-4">
-          <label className="block mb-1 font-medium text-gray-700">Email:</label>
+          <label className="block mb-1 font-medium text-gray-700">Email</label>
           <input
             type="email"
             {...register("email")}
-            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400 ${
+            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 ${
               errors.email ? "border-red-500" : "border-gray-300"
             }`}
           />
@@ -77,21 +80,22 @@ function LoginForm() {
           )}
         </div>
 
+        {/* Password */}
         <div className="mb-4 relative">
           <label className="block mb-1 font-medium text-gray-700">
-            Password:
+            Password
           </label>
           <input
             type={showPassword ? "text" : "password"}
             {...register("password")}
-            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400 ${
+            className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900 ${
               errors.password ? "border-red-500" : "border-gray-300"
             }`}
           />
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-2 top-9 text-sm text-green-500 hover:text-green-700"
+            className="absolute right-3 top-9 text-sm text-gray-600 hover:text-gray-900"
           >
             {showPassword ? "Hide" : "Show"}
           </button>
@@ -102,20 +106,22 @@ function LoginForm() {
           )}
         </div>
 
+        {/* Remember Me */}
         <div className="mb-6 flex items-center">
           <input
             type="checkbox"
             checked={rememberMe}
             onChange={(e) => setRememberMe(e.target.checked)}
-            className="mr-2 accent-green-400"
+            className="mr-2 accent-gray-900"
           />
           <label className="text-gray-700 font-medium">Remember Me</label>
         </div>
 
+        {/* Submit */}
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full bg-green-400 text-white py-2 rounded-lg hover:bg-green-500 disabled:bg-green-200"
+          className="w-full bg-gray-900 text-white py-2 rounded-lg hover:bg-gray-800 transition disabled:bg-gray-400"
         >
           {isSubmitting ? "Logging in..." : "Login"}
         </button>
