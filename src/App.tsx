@@ -6,6 +6,9 @@ import AdminDashboard from "./pages/AdminDashboard";
 import MemberDashboard from "./pages/MemberDashboard";
 import MembersPage from "./components/members/Members";
 import { AuthProvider } from "./provider/AuthProvider";
+import CreateMemberPage from "./pages/CreateMemberPage";
+import EditMemberPage from "./pages/EditMemberPage";
+import MemberDetailsPage from "./pages/MemberDetailsPage";
 
 function App() {
   return (
@@ -23,7 +26,11 @@ function App() {
               </ProtectedRoute>
             }
           >
+            {/* Members routes */}
             <Route path="members" element={<MembersPage />} />
+            <Route path="members/new" element={<CreateMemberPage />} />
+            <Route path="members/:id/edit" element={<EditMemberPage />} />
+            <Route path="members/:id" element={<MemberDetailsPage />} />
           </Route>
 
           {/* Member routes */}
